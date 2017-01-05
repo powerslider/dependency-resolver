@@ -22,6 +22,10 @@ public class Graph<T> {
         return adjacencyList.size() == 0;
     }
 
+    public Collection<Node<T>> getAdjacencyList() {
+        return adjacencyList.values();
+    }
+
     public Node<T> addIfAbsent(T nodeName) {
         Node<T> node;
         if (!hasNode(nodeName)) {
@@ -33,8 +37,8 @@ public class Graph<T> {
         return node;
     }
 
-    public Collection<Node<T>> getAdjacencyList() {
-        return adjacencyList.values();
+    public Node<T> getNode(T nodeName) {
+        return adjacencyList.get(nodeName);
     }
 
     private void addNode(Node<T> node) {
@@ -45,16 +49,10 @@ public class Graph<T> {
         return adjacencyList.containsKey(node);
     }
 
-    public Node<T> getNode(T nodeName) {
-        return adjacencyList.get(nodeName);
-    }
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        adjacencyList.forEach((k, v) -> {
-            builder.append(v.toString());
-        });
+        getAdjacencyList().forEach((n) -> builder.append(n.toString()));
         return builder.toString();
     }
 }

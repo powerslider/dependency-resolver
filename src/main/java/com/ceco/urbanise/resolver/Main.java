@@ -27,8 +27,7 @@ public class Main {
             String line;
             while (!(line = scanner.nextLine()).isEmpty()) {
                 String[] nodeNames = line.split("\\s");
-                String nodeName = nodeNames[0];
-                Node<String> node = graph.addIfAbsent(nodeName);
+                Node<String> node = graph.addIfAbsent(nodeNames[0]);
                 for (int i = 1; i < nodeNames.length; i++) {
                     Node<String> adjacentNode = graph.addIfAbsent(nodeNames[i]);
                     node.addEdge(adjacentNode);

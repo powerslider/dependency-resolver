@@ -49,15 +49,20 @@ public class DependencyResolver<T extends Comparable<T>> {
 
             List<T> list = new ArrayList<>(currentStack);
             Collections.sort(list);
-            Node<T> currentNode = fullDepsGraph.addIfAbsent(currentNodeName);
-            for (T sortedNodeName : list) {
-                if (!sortedNodeName.equals(currentNodeName)) {
-                    currentNode.addEdge(new Node<>(sortedNodeName));
+            if (hasEdges(currentNodeName)) {
+                Node<T> currentNode = fullDepsGraph.addIfAbsent(currentNodeName);
+                for (T sortedNodeName : list) {
+                    if (!sortedNodeName.equals(currentNodeName)) {
+                        currentNode.addEdge(new Node<>(sortedNodeName));
+                    }
                 }
             }
-
         }
         return fullDepsGraph;
+    }
+
+    private boolean hasEdges(T currentNodeName) {
+        return !dependencyGraph.getNode(currentNodeName).getEdges().isEmpty();
     }
 
     private void topologicalSort(Node<T> node, Deque<T> resolved) {
