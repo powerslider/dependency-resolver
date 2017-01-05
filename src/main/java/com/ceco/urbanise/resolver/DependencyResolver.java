@@ -33,34 +33,41 @@ public class DependencyResolver<T extends Comparable<T>> {
     }
 
     public Graph<T> resolve() {
-        List<T> polledNodes = new ArrayList<>();
         Graph<T> fullDepsGraph = new Graph<>();
         Deque<T> stack = new ArrayDeque<>();
-        for (Node n : dependencyGraph.getAdjacencyList()) {
+        Deque<T> currentStack = null;
+        for (Node<T> n : dependencyGraph.getAdjacencyList()) {
             if (!n.isVisited()) {
                 topologicalSort(n, stack);
+                currentStack = new ArrayDeque<>(stack);
             }
 
-            T currentNodeName = stack.pollFirst();
-            polledNodes.add(currentNodeName);
-            List<T> list = new ArrayList<>(stack);
+            T currentNodeName = currentStack.pop();
+            while (fullDepsGraph.getNode(currentNodeName) != null) {
+                currentNodeName = currentStack.pop();
+            }
+
+            List<T> list = new ArrayList<>(currentStack);
             Collections.sort(list);
             Node<T> currentNode = fullDepsGraph.addIfAbsent(currentNodeName);
-            list.forEach((sortedNodeName) -> {
-                currentNode.addEdge(new Node<>(sortedNodeName));
-            });
+            for (T sortedNodeName : list) {
+                if (!sortedNodeName.equals(currentNodeName)) {
+                    currentNode.addEdge(new Node<>(sortedNodeName));
+                }
+            }
+
         }
         return fullDepsGraph;
     }
 
-    private void topologicalSort(Node<T> node, Deque<T> stack) {
+    private void topologicalSort(Node<T> node, Deque<T> resolved) {
         node.setVisited(true);
         List<Node> edges = node.getEdges();
         edges.forEach((e) -> {
             if (!e.isVisited())
-                topologicalSort(e, stack);
+                topologicalSort(e, resolved);
         });
-        stack.push(node.getName());
+        resolved.push(node.getName());
     }
 
 }

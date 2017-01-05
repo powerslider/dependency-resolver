@@ -18,8 +18,8 @@ public class Graph<T> {
     }
 
 
-    public int size() {
-        return adjacencyList.size();
+    public boolean isEmpty() {
+        return adjacencyList.size() == 0;
     }
 
     public Node<T> addIfAbsent(T nodeName) {
@@ -45,7 +45,7 @@ public class Graph<T> {
         return adjacencyList.containsKey(node);
     }
 
-    private Node<T> getNode(T nodeName) {
+    public Node<T> getNode(T nodeName) {
         return adjacencyList.get(nodeName);
     }
 

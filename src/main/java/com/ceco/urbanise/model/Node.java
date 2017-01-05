@@ -27,6 +27,10 @@ public class Node<T> {
         this.edges.add(node);
     }
 
+    public void addEdges(List<Node> nodes) {
+        this.edges.addAll(nodes);
+    }
+
     public boolean isVisited() {
         return isVisited;
     }
