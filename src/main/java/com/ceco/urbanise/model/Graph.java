@@ -67,4 +67,20 @@ public class Graph<T> {
         getAdjacencyList().forEach((n) -> builder.append(n.toString()));
         return builder.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Graph)) return false;
+
+        Graph<?> graph = (Graph<?>) o;
+
+        return adjacencyList != null ? adjacencyList.equals(graph.adjacencyList) : graph.adjacencyList == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return adjacencyList != null ? adjacencyList.hashCode() : 0;
+    }
 }
