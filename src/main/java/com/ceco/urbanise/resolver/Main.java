@@ -14,24 +14,28 @@ public class Main {
     public static void main(String args[]) {
         Graph<String> graph = readGraphInputData();
 
+        System.out.println(graph);
+
         final Graph fullDepsGraph = new DependencyResolver.Builder<String>()
                 .withDependencyGraph(graph)
                 .createResolver()
                 .resolve();
 
-//        Graph<String> revGraph = graph.reverse();
-//        final Graph fullDepsReversedGraph = new DependencyResolver.Builder<String>()
-//                .withDependencyGraph(revGraph)
-//                .createResolver()
-//                .resolve();
-
-        System.out.println(graph);
         System.out.println();
         System.out.println(fullDepsGraph);
         System.out.println();
-//        System.out.println(revGraph);
-//        System.out.println();
-//        System.out.println(fullDepsReversedGraph);
+
+        Graph<String> revGraph = graph.reverse();
+
+        System.out.println(revGraph);
+
+        final Graph fullDepsReversedGraph = new DependencyResolver.Builder<String>()
+                .withDependencyGraph(revGraph)
+                .createResolver()
+                .resolve();
+
+        System.out.println();
+        System.out.println(fullDepsReversedGraph);
     }
 
     private static Graph<String> readGraphInputData() {
