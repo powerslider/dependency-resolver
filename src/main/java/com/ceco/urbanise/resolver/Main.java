@@ -13,12 +13,25 @@ public class Main {
 
     public static void main(String args[]) {
         Graph<String> graph = readGraphInputData();
-        final Graph resolver = new DependencyResolver.Builder<String>()
+
+        final Graph fullDepsGraph = new DependencyResolver.Builder<String>()
                 .withDependencyGraph(graph)
                 .createResolver()
                 .resolve();
 
-        System.out.println(resolver);
+        Graph<String> revGraph = graph.reverse();
+        final Graph fullDepsReversedGraph = new DependencyResolver.Builder<String>()
+                .withDependencyGraph(revGraph)
+                .createResolver()
+                .resolve();
+
+        System.out.println(graph);
+        System.out.println();
+        System.out.println(fullDepsGraph);
+        System.out.println();
+        System.out.println(revGraph);
+        System.out.println();
+        System.out.println(fullDepsReversedGraph);
     }
 
     private static Graph<String> readGraphInputData() {

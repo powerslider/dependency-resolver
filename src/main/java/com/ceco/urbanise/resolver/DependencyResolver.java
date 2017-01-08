@@ -27,6 +27,9 @@ public class DependencyResolver<T extends Comparable<T>> {
         }
 
         public DependencyResolver<T> createResolver() {
+            Optional.ofNullable(dependencyGraph)
+                    .orElseThrow(() -> new IllegalStateException("Dependency graph cannot be null"));
+
             return new DependencyResolver<>(dependencyGraph);
         }
 

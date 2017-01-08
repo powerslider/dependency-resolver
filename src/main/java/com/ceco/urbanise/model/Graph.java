@@ -41,6 +41,18 @@ public class Graph<T> {
         return adjacencyList.get(nodeName);
     }
 
+    public Graph<T> reverse() {
+        Collection<Node<T>> adjList = getAdjacencyList();
+        adjacencyList = new HashMap<>();
+        for (Node<T> n : adjList) {
+            for (Node<T> e : n.getEdges()) {
+                Node<T> revNode = addIfAbsent(e.getName());
+                revNode.addEdge(n);
+            }
+        }
+        return this;
+    }
+
     private void addNode(Node<T> node) {
         adjacencyList.putIfAbsent(node.getName(), node);
     }
