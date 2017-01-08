@@ -38,10 +38,11 @@ public class DependencyResolver<T extends Comparable<T>> {
     public Graph<T> resolve() {
         Graph<T> fullDepsGraph = new Graph<>();
         Deque<T> stack = new ArrayDeque<>();
+        List<T> unresolved = new ArrayList<>();
         Deque<T> currentStack = null;
         for (Node<T> n : dependencyGraph.getAdjacencyList()) {
             if (!n.isVisited()) {
-                topologicalSort(n, stack);
+                topologicalSort(n, stack, unresolved);
                 currentStack = new ArrayDeque<>(stack);
             }
 
@@ -68,14 +69,21 @@ public class DependencyResolver<T extends Comparable<T>> {
         return !dependencyGraph.getNode(currentNodeName).getEdges().isEmpty();
     }
 
-    private void topologicalSort(Node<T> node, Deque<T> resolved) {
-        node.setVisited(true);
-        List<Node> edges = node.getEdges();
-        edges.forEach((e) -> {
-            if (!e.isVisited())
-                topologicalSort(e, resolved);
-        });
+    private void topologicalSort(Node<T> node, Deque<T> resolved, List<T> unresolved) {
+        unresolved.add(node.getName());
+
+        for (Node<T> edge : node.getEdges()) {
+            if (!resolved.contains(edge.getName())) {
+                if (unresolved.contains(edge.getName())) {
+                    throw new IllegalStateException(String.format("Circular reference detected: %s -> %s",
+                            node.getName(), edge.getName()));
+                }
+                topologicalSort(edge, resolved, unresolved);
+            }
+        }
+
         resolved.push(node.getName());
+        unresolved.remove(node.getName());
     }
 
 }

@@ -19,19 +19,19 @@ public class Main {
                 .createResolver()
                 .resolve();
 
-        Graph<String> revGraph = graph.reverse();
-        final Graph fullDepsReversedGraph = new DependencyResolver.Builder<String>()
-                .withDependencyGraph(revGraph)
-                .createResolver()
-                .resolve();
+//        Graph<String> revGraph = graph.reverse();
+//        final Graph fullDepsReversedGraph = new DependencyResolver.Builder<String>()
+//                .withDependencyGraph(revGraph)
+//                .createResolver()
+//                .resolve();
 
         System.out.println(graph);
         System.out.println();
         System.out.println(fullDepsGraph);
         System.out.println();
-        System.out.println(revGraph);
-        System.out.println();
-        System.out.println(fullDepsReversedGraph);
+//        System.out.println(revGraph);
+//        System.out.println();
+//        System.out.println(fullDepsReversedGraph);
     }
 
     private static Graph<String> readGraphInputData() {
