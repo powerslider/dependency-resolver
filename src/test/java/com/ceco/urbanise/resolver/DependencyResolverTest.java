@@ -1,7 +1,7 @@
 package com.ceco.urbanise.resolver;
 
+import com.ceco.urbanise.TestData;
 import com.ceco.urbanise.model.Graph;
-import com.ceco.urbanise.model.Node;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,41 +15,41 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DependencyResolverTest {
 
     @Test
-    @DisplayName("")
-    void test() {
-        Graph<String> graph = new Graph<>();
+    @DisplayName("should throw exception when no dependency graph is passed to resolver")
+    void testThrowsExceptionWhenNoGraphSet() {
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> new DependencyResolver.Builder<>().createResolver());
 
-        Node<String> a = graph.addIfAbsent("A");
-        Node<String> b = graph.addIfAbsent("B");
-        Node<String> c = graph.addIfAbsent("C");
-        Node<String> d = graph.addIfAbsent("D");
-        Node<String> e = graph.addIfAbsent("E");
-        Node<String> f = graph.addIfAbsent("F");
-        Node<String> g = graph.addIfAbsent("G");
-        Node<String> h = graph.addIfAbsent("H");
-
-        a.addEdge(b);
-        a.addEdge(c);
-        b.addEdge(c);
-        b.addEdge(e);
-        c.addEdge(g);
-        d.addEdge(a);
-        d.addEdge(f);
-        e.addEdge(f);
-        f.addEdge(h);
-
-        Graph resolvedGraph = new DependencyResolver.Builder<String>()
-                .withDependencyGraph(graph)
-                .createResolver()
-                .resolve();
-
+        assertEquals("Dependency graph cannot be null", exception.getMessage());
     }
 
     @Test
-    void exceptionTesting() {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            throw new IllegalArgumentException("a message");
-        });
-        assertEquals("a message", exception.getMessage());
+    @DisplayName("should find correct dependencies of each node in graph")
+    void testCorrectDepsInGraph() {
+        Graph<String> dependencyGraph = TestData.graphExample1();
+        Graph<String> expectedGraph = TestData.resolvedGraphExample1();
+
+        Graph resolvedGraph = new DependencyResolver.Builder<String>()
+                .withDependencyGraph(dependencyGraph)
+                .createResolver()
+                .resolve();
+
+        assertEquals(expectedGraph, resolvedGraph);
+    }
+
+    @Test
+    @DisplayName("should find circular dependency")
+    void testCircularDependency() {
+        Graph<String> dependencyGraph = TestData.graphExample1().reverse();
+
+        Throwable exception = assertThrows(IllegalArgumentException.class,
+                () -> {
+                    new DependencyResolver.Builder<String>()
+                            .withDependencyGraph(dependencyGraph)
+                            .createResolver()
+                            .resolve();
+                });
+
+        assertEquals("Circular reference detected: D -> A", exception.getMessage());
     }
 }

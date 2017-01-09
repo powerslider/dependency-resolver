@@ -1,9 +1,7 @@
 package com.ceco.urbanise.resolver;
 
+import com.ceco.urbanise.io.InputReader;
 import com.ceco.urbanise.model.Graph;
-import com.ceco.urbanise.model.Node;
-
-import java.util.Scanner;
 
 /**
  * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
@@ -12,7 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String args[]) {
-        Graph<String> graph = readGraphInputData();
+        Graph<String> graph = InputReader.readGraphInputData(System.in);
 
         System.out.println(graph);
 
@@ -36,22 +34,6 @@ public class Main {
 
         System.out.println();
         System.out.println(fullDepsReversedGraph);
-    }
-
-    private static Graph<String> readGraphInputData() {
-        Graph<String> graph = new Graph<>();
-        try (Scanner scanner = new Scanner(System.in)) {
-            String line;
-            while (!(line = scanner.nextLine()).isEmpty()) {
-                String[] nodeNames = line.split("\\s");
-                Node<String> node = graph.addIfAbsent(nodeNames[0]);
-                for (int i = 1; i < nodeNames.length; i++) {
-                    Node<String> adjacentNode = graph.addIfAbsent(nodeNames[i]);
-                    node.addEdge(adjacentNode);
-                }
-            }
-        }
-        return graph;
     }
 }
 

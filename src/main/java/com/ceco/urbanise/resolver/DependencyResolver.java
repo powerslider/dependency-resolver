@@ -28,11 +28,10 @@ public class DependencyResolver<T extends Comparable<T>> {
 
         public DependencyResolver<T> createResolver() {
             Optional.ofNullable(dependencyGraph)
-                    .orElseThrow(() -> new IllegalStateException("Dependency graph cannot be null"));
+                    .orElseThrow(() -> new IllegalArgumentException("Dependency graph cannot be null"));
 
             return new DependencyResolver<>(dependencyGraph);
         }
-
     }
 
     public Graph<T> resolve() {
@@ -55,11 +54,14 @@ public class DependencyResolver<T extends Comparable<T>> {
             Collections.sort(list);
             if (hasEdges(currentNodeName)) {
                 Node<T> currentNode = fullDepsGraph.addIfAbsent(currentNodeName);
+//                System.out.println("Node<String> " + currentNodeName.toString().toLowerCase() + " = fullDepsGraph.addIfAbsent(\""  + currentNodeName + "\");");
                 for (T sortedNodeName : list) {
                     if (!sortedNodeName.equals(currentNodeName)) {
+//                        System.out.println(currentNodeName.toString().toLowerCase() + ".addEdge(new Node<>(\"" + sortedNodeName + "\"));");
                         currentNode.addEdge(new Node<>(sortedNodeName));
                     }
                 }
+                System.out.println();
             }
         }
         return fullDepsGraph;
