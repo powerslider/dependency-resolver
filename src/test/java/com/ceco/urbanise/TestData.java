@@ -136,9 +136,9 @@ public class TestData {
      * @return a graph with the specified nodes and edges
      */
     public static Graph<String> resolvedGraphExample1() {
-        Graph<String> fullDepsGraph = new Graph<>();
+        Graph<String> resolvedGraph = new Graph<>();
 
-        Node<String> a = fullDepsGraph.addIfAbsent("A");
+        Node<String> a = resolvedGraph.addIfAbsent("A");
         a.addEdge(new Node<>("B"));
         a.addEdge(new Node<>("C"));
         a.addEdge(new Node<>("E"));
@@ -146,20 +146,20 @@ public class TestData {
         a.addEdge(new Node<>("G"));
         a.addEdge(new Node<>("H"));
 
-        Node<String> b = fullDepsGraph.addIfAbsent("B");
+        Node<String> b = resolvedGraph.addIfAbsent("B");
         b.addEdge(new Node<>("C"));
         b.addEdge(new Node<>("E"));
         b.addEdge(new Node<>("F"));
         b.addEdge(new Node<>("G"));
         b.addEdge(new Node<>("H"));
 
-        Node<String> e = fullDepsGraph.addIfAbsent("E");
+        Node<String> e = resolvedGraph.addIfAbsent("E");
         e.addEdge(new Node<>("C"));
         e.addEdge(new Node<>("F"));
         e.addEdge(new Node<>("G"));
         e.addEdge(new Node<>("H"));
 
-        Node<String> d = fullDepsGraph.addIfAbsent("D");
+        Node<String> d = resolvedGraph.addIfAbsent("D");
         d.addEdge(new Node<>("A"));
         d.addEdge(new Node<>("B"));
         d.addEdge(new Node<>("C"));
@@ -168,15 +168,57 @@ public class TestData {
         d.addEdge(new Node<>("G"));
         d.addEdge(new Node<>("H"));
 
-        Node<String> f = fullDepsGraph.addIfAbsent("F");
+        Node<String> f = resolvedGraph.addIfAbsent("F");
         f.addEdge(new Node<>("C"));
         f.addEdge(new Node<>("G"));
         f.addEdge(new Node<>("H"));
 
-        Node<String> c = fullDepsGraph.addIfAbsent("C");
+        Node<String> c = resolvedGraph.addIfAbsent("C");
         c.addEdge(new Node<>("G"));
 
-        return fullDepsGraph;
+        return resolvedGraph;
 
+    }
+
+    /**
+     * A D
+     * B A
+     * C A B
+     * E B
+     * F D E
+     * G C
+     * H F
+     *
+     * @return a graph with the specified nodes and edges
+     */
+    public static Graph<String> reversedGraphExample1() {
+        Graph<String> revGraph = new Graph<>();
+
+        Node<String> a = revGraph.addIfAbsent("A");
+        Node<String> b = revGraph.addIfAbsent("B");
+        Node<String> c = revGraph.addIfAbsent("C");
+        Node<String> d = new Node<>("D");
+        Node<String> e = revGraph.addIfAbsent("E");
+        Node<String> f = revGraph.addIfAbsent("F");
+        Node<String> g = revGraph.addIfAbsent("G");
+        Node<String> h = revGraph.addIfAbsent("H");
+
+        a.addEdge(d);
+
+        b.addEdge(a);
+
+        c.addEdge(a);
+        c.addEdge(b);
+
+        e.addEdge(b);
+
+        f.addEdge(d);
+        f.addEdge(e);
+
+        g.addEdge(c);
+
+        h.addEdge(f);
+
+        return revGraph;
     }
 }

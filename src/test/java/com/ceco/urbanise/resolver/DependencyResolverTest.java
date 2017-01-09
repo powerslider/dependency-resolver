@@ -42,7 +42,7 @@ public class DependencyResolverTest {
     void testCircularDependency() {
         Graph<String> dependencyGraph = TestData.graphExample1().reverse();
 
-        Throwable exception = assertThrows(IllegalArgumentException.class,
+        Throwable exception = assertThrows(IllegalStateException.class,
                 () -> {
                     new DependencyResolver.Builder<String>()
                             .withDependencyGraph(dependencyGraph)

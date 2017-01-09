@@ -78,7 +78,7 @@ public class DependencyResolver<T extends Comparable<T>> {
         for (Node<T> edge : node.getEdges()) {
             if (!resolved.contains(edge.getName())) {
                 if (unresolved.contains(edge.getName())) {
-                    throw new IllegalArgumentException(String.format("Circular reference detected: %s -> %s",
+                    throw new IllegalStateException(String.format("Circular reference detected: %s -> %s",
                             node.getName(), edge.getName()));
                 }
                 topologicalSort(edge, resolved, unresolved);

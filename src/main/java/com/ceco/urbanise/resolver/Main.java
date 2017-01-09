@@ -31,7 +31,7 @@ public class Main {
                 .withDependencyGraph(revGraph)
                 .createResolver()
                 .resolve();
-
+        System.out.println(revGraph);
         System.out.println();
         System.out.println(fullDepsReversedGraph);
     }

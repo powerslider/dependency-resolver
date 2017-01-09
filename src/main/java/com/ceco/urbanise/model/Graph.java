@@ -47,7 +47,7 @@ public class Graph<T> {
         for (Node<T> n : adjList) {
             for (Node<T> e : n.getEdges()) {
                 Node<T> revNode = addIfAbsent(e.getName());
-                revNode.addEdge(n);
+                revNode.addEdge(new Node<>(n.getName()));
             }
         }
         return this;
@@ -76,7 +76,6 @@ public class Graph<T> {
         Graph<?> graph = (Graph<?>) o;
 
         return adjacencyList != null ? adjacencyList.equals(graph.adjacencyList) : graph.adjacencyList == null;
-
     }
 
     @Override
