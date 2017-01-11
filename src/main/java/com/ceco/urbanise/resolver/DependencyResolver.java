@@ -30,8 +30,10 @@ public class DependencyResolver<T extends Comparable<T>> {
     }
 
     /**
+     * Builder class for easy and fluent instantiation.
      *
      * @param <T>
+     *      type of graph node names
      */
     public static class Builder<T extends Comparable<T>> {
 
