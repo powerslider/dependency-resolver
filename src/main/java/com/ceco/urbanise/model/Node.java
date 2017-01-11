@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  *
  * @param <T>
  *     type of graph node names
- * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
+ * @author Tsvetan Dimitrov <tsvetan.dimitrov23@gmail.com>
  * @since 04-Jan-2017
  */
 public class Node<T extends Comparable<T>> {

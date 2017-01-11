@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
+ * @author Tsvetan Dimitrov <tsvetan.dimitrov23@gmail.com>
  * @since 04-Jan-2017
  */
 public class DependencyResolverTest {
