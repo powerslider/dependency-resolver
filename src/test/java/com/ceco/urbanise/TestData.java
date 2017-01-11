@@ -154,9 +154,7 @@ public class TestData {
         b.addEdge(new Node<>("H"));
 
         Node<String> e = resolvedGraph.addIfAbsent("E");
-        e.addEdge(new Node<>("C"));
         e.addEdge(new Node<>("F"));
-        e.addEdge(new Node<>("G"));
         e.addEdge(new Node<>("H"));
 
         Node<String> d = resolvedGraph.addIfAbsent("D");
@@ -169,8 +167,6 @@ public class TestData {
         d.addEdge(new Node<>("H"));
 
         Node<String> f = resolvedGraph.addIfAbsent("F");
-        f.addEdge(new Node<>("C"));
-        f.addEdge(new Node<>("G"));
         f.addEdge(new Node<>("H"));
 
         Node<String> c = resolvedGraph.addIfAbsent("C");

@@ -3,6 +3,8 @@ package com.ceco.urbanise.model;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
@@ -12,7 +14,7 @@ public class Node<T> {
 
     private final T name;
 
-    private List<Node> edges;
+    private List<Node<T>> edges;
 
     private List<T> edgeNames;
 
@@ -26,13 +28,15 @@ public class Node<T> {
     }
 
 
-    public void addEdge(Node node) {
+    public void addEdge(Node<T> node) {
         this.edges.add(node);
-        this.edgeNames.add((T) node.getName());
+        this.edgeNames.add(node.getName());
     }
 
-    public void addEdges(List<Node> nodes) {
-        this.edges.addAll(nodes);
+    public void replaceEdgesWith(List<T> edgeNames) {
+        this.edges = edgeNames.stream()
+                .map((Function<T, Node<T>>) Node::new)
+                .collect(Collectors.toList());
     }
 
     public boolean dependsOn(T descendantName) {
@@ -52,7 +56,7 @@ public class Node<T> {
         return name;
     }
 
-    public List<Node> getEdges() {
+    public List<Node<T>> getEdges() {
         return edges;
     }
 
@@ -62,7 +66,7 @@ public class Node<T> {
         builder.append(name)
                 .append(" ");
 
-        Iterator<Node> it = edges.iterator();
+        Iterator<Node<T>> it = edges.iterator();
         if (!it.hasNext()) {
             builder.append("\n");
             return builder.toString();
