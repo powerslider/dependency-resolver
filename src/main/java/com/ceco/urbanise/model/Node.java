@@ -14,21 +14,30 @@ public class Node<T> {
 
     private List<Node> edges;
 
+    private List<T> edgeNames;
+
     private boolean isVisited;
 
 
     public Node(T name) {
         this.name = name;
         this.edges = new ArrayList<>();
+        this.edgeNames = new ArrayList<>();
     }
 
 
     public void addEdge(Node node) {
         this.edges.add(node);
+        this.edgeNames.add((T) node.getName());
     }
 
     public void addEdges(List<Node> nodes) {
         this.edges.addAll(nodes);
+    }
+
+    public boolean dependsOn(T descendantName) {
+        return edgeNames.stream()
+                .anyMatch((eName) -> eName.equals(descendantName));
     }
 
     public boolean isVisited() {

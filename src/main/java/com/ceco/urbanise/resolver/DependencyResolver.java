@@ -13,6 +13,8 @@ public class DependencyResolver<T extends Comparable<T>> {
 
     private Graph<T> dependencyGraph;
 
+    private Graph<T> fullDepsGraph;
+
     private DependencyResolver(Graph<T> graph) {
         this.dependencyGraph = graph;
     }
@@ -35,37 +37,41 @@ public class DependencyResolver<T extends Comparable<T>> {
     }
 
     public Graph<T> resolve() {
-        Graph<T> fullDepsGraph = new Graph<>();
-        Deque<T> stack = new ArrayDeque<>();
+        fullDepsGraph = new Graph<>();
+        Deque<T> resolvedStack = new ArrayDeque<>();
         List<T> unresolved = new ArrayList<>();
-        Deque<T> currentStack = null;
+        Deque<T> currentResolvedStack = null;
         for (Node<T> n : dependencyGraph.getAdjacencyList()) {
             if (!n.isVisited()) {
-                topologicalSort(n, stack, unresolved);
-                currentStack = new ArrayDeque<>(stack);
+                topologicalSort(n, resolvedStack, unresolved);
+                currentResolvedStack = new ArrayDeque<>(resolvedStack);
             }
 
-            T currentNodeName = currentStack.pop();
+            T currentNodeName = currentResolvedStack.pop();
             while (fullDepsGraph.getNode(currentNodeName) != null) {
-                currentNodeName = currentStack.pop();
+                currentNodeName = currentResolvedStack.pop();
             }
 
-            List<T> list = new ArrayList<>(currentStack);
-            Collections.sort(list);
+            List<T> resolvedList = new ArrayList<>(currentResolvedStack);
+//            Collections.sort(list);
             if (hasEdges(currentNodeName)) {
                 Node<T> currentNode = fullDepsGraph.addIfAbsent(currentNodeName);
-//                System.out.println("Node<String> " + currentNodeName.toString().toLowerCase() + " = fullDepsGraph.addIfAbsent(\""  + currentNodeName + "\");");
-                for (T sortedNodeName : list) {
-                    if (!sortedNodeName.equals(currentNodeName)) {
-//                        System.out.println(currentNodeName.toString().toLowerCase() + ".addEdge(new Node<>(\"" + sortedNodeName + "\"));");
+                T origCurrentNodeName = currentNodeName;
+                for (Iterator<T> it = resolvedList.iterator(); it.hasNext();) {
+                    T sortedNodeName = it.next();
+                    if (dependencyGraph.getNode(currentNodeName).dependsOn(sortedNodeName)) {
                         currentNode.addEdge(new Node<>(sortedNodeName));
+                        currentNodeName = sortedNodeName;
+                        it.remove();
                     }
                 }
-                System.out.println();
+
+                a(resolvedList, currentNode, origCurrentNodeName);
             }
         }
         return fullDepsGraph;
     }
+
 
     private boolean hasEdges(T currentNodeName) {
         return !dependencyGraph.getNode(currentNodeName).getEdges().isEmpty();
@@ -87,6 +93,31 @@ public class DependencyResolver<T extends Comparable<T>> {
 
         resolved.push(node.getName());
         unresolved.remove(node.getName());
+    }
+
+    private void a(List<T> resolvedList, Node<T> currentNode, T nodeName) {
+        if (resolvedList.isEmpty()) {
+            return;
+        }
+
+        Node<T> depGraphNode = dependencyGraph.getNode(nodeName);
+        depGraphNode = addDependencies(resolvedList, currentNode, depGraphNode);
+
+        for (Node<T> e : depGraphNode.getEdges()) {
+            a(resolvedList, currentNode, e.getName());
+        }
+    }
+
+    private Node<T> addDependencies(List<T> resolvedList, Node<T> currentNode, Node<T> depGraphNode) {
+        for (Iterator<T> it = resolvedList.iterator(); it.hasNext();) {
+            T currentNodeName = it.next();
+            if (depGraphNode.dependsOn(currentNodeName)) {
+                currentNode.addEdge(new Node<>(currentNodeName));
+                depGraphNode = dependencyGraph.getNode(currentNodeName);
+                it.remove();
+            }
+        }
+        return depGraphNode;
     }
 
 }
