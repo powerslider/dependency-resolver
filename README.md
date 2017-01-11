@@ -33,6 +33,16 @@ F A B D E
 G A B C D
 H A B D E F
 ```
+There is also built-in detection for circular dependencies. If we have the following graph:
+```
+A B C
+B A D
+```
+our program would throw an exception and respond the following:
+```
+Circular reference detected: B -> A
+```
+
 
 ## Build
 This is a Maven based project. So to build it and run the tests execute:
