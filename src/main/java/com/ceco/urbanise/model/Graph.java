@@ -8,6 +8,8 @@ import java.util.Map;
  * Model class representing a graph data structure using an adjacency list.
  * Operates with node objects {@link Node} representing graph nodes.
  *
+ * @param <T>
+ *     type of graph node names
  * @author Tsvetan Dimitrov <tsvetan.dimitrov23@gmail.com>
  * @since 04-Jan-2017
  */

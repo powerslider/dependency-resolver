@@ -6,6 +6,8 @@ import com.ceco.urbanise.model.Graph;
 import java.util.List;
 
 /**
+ * Main execution class of Dependency Resolver awaiting user input from the console.
+ *
  * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
  * @since 04-Jan-2017
  */

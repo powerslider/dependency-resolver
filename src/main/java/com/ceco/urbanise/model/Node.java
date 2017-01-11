@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 /**
  * Model class representing a node (vertex) in a graph data structure.
  *
+ * @param <T>
+ *     type of graph node names
  * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
  * @since 04-Jan-2017
  */

@@ -4,6 +4,8 @@ import com.ceco.urbanise.model.Graph;
 import com.ceco.urbanise.model.Node;
 
 /**
+ * Class for providing test objects used for expected assertions.
+ *
  * @author Tsvetan Dimitrov <tsvetan.dimitrov23@gmail.com>
  * @since 09-Jan-2017
  */
