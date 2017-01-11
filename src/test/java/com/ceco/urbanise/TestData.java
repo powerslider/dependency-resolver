@@ -217,4 +217,83 @@ public class TestData {
 
         return revGraph;
     }
+
+    /**
+     * A D
+     * B A D
+     * C A B D
+     * E A B D
+     * F A B D E
+     * G A B C D
+     * H A B D E F
+     *
+     * @return a graph with the specified nodes and edges
+     */
+    public static Graph<String> resolvedReversedGraphExample1() {
+        Graph<String> resolvedReversedGraph = new Graph<>();
+
+        Node<String> a = resolvedReversedGraph.addIfAbsent("A");
+        a.addEdge(new Node<>("D"));
+
+        Node<String> b = resolvedReversedGraph.addIfAbsent("B");
+        b.addEdge(new Node<>("A"));
+        b.addEdge(new Node<>("D"));
+
+        Node<String> c = resolvedReversedGraph.addIfAbsent("C");
+        c.addEdge(new Node<>("A"));
+        c.addEdge(new Node<>("B"));
+        c.addEdge(new Node<>("D"));
+
+        Node<String> e = resolvedReversedGraph.addIfAbsent("E");
+        e.addEdge(new Node<>("A"));
+        e.addEdge(new Node<>("B"));
+        e.addEdge(new Node<>("D"));
+
+        Node<String> f = resolvedReversedGraph.addIfAbsent("F");
+        f.addEdge(new Node<>("A"));
+        f.addEdge(new Node<>("B"));
+        f.addEdge(new Node<>("D"));
+        f.addEdge(new Node<>("E"));
+
+        Node<String> g = resolvedReversedGraph.addIfAbsent("G");
+        g.addEdge(new Node<>("A"));
+        g.addEdge(new Node<>("B"));
+        g.addEdge(new Node<>("C"));
+        g.addEdge(new Node<>("D"));
+
+        Node<String> h = resolvedReversedGraph.addIfAbsent("H");
+        h.addEdge(new Node<>("A"));
+        h.addEdge(new Node<>("B"));
+        h.addEdge(new Node<>("D"));
+        h.addEdge(new Node<>("E"));
+        h.addEdge(new Node<>("F"));
+
+        return resolvedReversedGraph;
+    }
+
+    /**
+     * A B C
+     * B A D
+     * D F
+     *
+     * @return a graph with the specified nodes and edges
+     */
+    public static Graph<String> circularDependencyGraphExample() {
+        Graph<String> circularDepGraph = new Graph<>();
+        Node<String> a = circularDepGraph.addIfAbsent("A");
+        Node<String> b = circularDepGraph.addIfAbsent("B");
+        Node<String> c = circularDepGraph.addIfAbsent("C");
+        Node<String> d = circularDepGraph.addIfAbsent("D");
+        Node<String> f = circularDepGraph.addIfAbsent("F");
+
+        a.addEdge(b);
+        a.addEdge(c);
+
+        b.addEdge(a);
+        b.addEdge(d);
+
+        d.addEdge(f);
+
+        return circularDepGraph;
+    }
 }

@@ -38,9 +38,23 @@ public class DependencyResolverTest {
     }
 
     @Test
+    @DisplayName("should find correct dependencies of each node in reversed graph")
+    void testCorrectDepsInReversedGraph() {
+        Graph<String> dependencyGraph = TestData.graphExample1().reverse();
+        Graph<String> expectedGraph = TestData.resolvedReversedGraphExample1();
+
+        Graph resolvedGraph = new DependencyResolver.Builder<String>()
+                .withDependencyGraph(dependencyGraph)
+                .createResolver()
+                .resolve();
+
+        assertEquals(expectedGraph, resolvedGraph);
+    }
+
+    @Test
     @DisplayName("should find circular dependency")
     void testCircularDependency() {
-        Graph<String> dependencyGraph = TestData.graphExample1().reverse();
+        Graph<String> dependencyGraph = TestData.circularDependencyGraphExample();
 
         Throwable exception = assertThrows(IllegalStateException.class,
                 () -> {
@@ -50,6 +64,6 @@ public class DependencyResolverTest {
                             .resolve();
                 });
 
-        assertEquals("Circular reference detected: D -> A", exception.getMessage());
+        assertEquals("Circular reference detected: B -> A", exception.getMessage());
     }
 }

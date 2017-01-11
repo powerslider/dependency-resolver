@@ -107,6 +107,7 @@ public class DependencyResolver<T extends Comparable<T>> {
         if (depGraphNode == null) return;
 
         depGraphNode = addDependencies(resolvedList, currentNodeEdgeNames, depGraphNode);
+        if (depGraphNode == null) return;
 
         for (Node<T> e : depGraphNode.getEdges()) {
             traceDependencies(resolvedList, currentNodeEdgeNames, e.getName());
@@ -124,5 +125,4 @@ public class DependencyResolver<T extends Comparable<T>> {
         }
         return depGraphNode;
     }
-
 }

@@ -17,9 +17,9 @@ public class Main {
                 .createResolver()
                 .resolve();
 
+        System.out.println(graph);
         System.out.println("Graph dependencies:");
         System.out.println(fullDepsGraph);
-        System.out.println();
 
         Graph<String> revGraph = graph.reverse();
         final Graph fullDepsReversedGraph = new DependencyResolver.Builder<String>()
@@ -27,6 +27,7 @@ public class Main {
                 .createResolver()
                 .resolve();
 
+        System.out.println(revGraph);
         System.out.println("Reversed graph dependencies:");
         System.out.println(fullDepsReversedGraph);
     }
