@@ -7,17 +7,35 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
+ * Model class representing a node (vertex) in a graph data structure.
+ *
  * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
  * @since 04-Jan-2017
  */
-public class Node<T> {
+public class Node<T extends Comparable<T>> {
 
+    /**
+     * Name of the node.
+     */
     private final T name;
 
+    /**
+     * Кееps a list with all adjacent nodes of the current
+     * node where each adjacent node together with the current
+     * node form and edge.
+     */
     private List<Node<T>> edges;
 
+    /**
+     * Same as {@link Node#edges} but keeps only the names
+     * of the adjacent nodes which helps for some operations
+     * on the graph.
+     */
     private List<T> edgeNames;
 
+    /**
+     * Flag, marking if a node is visited or not.
+     */
     private boolean isVisited;
 
 
@@ -28,20 +46,40 @@ public class Node<T> {
     }
 
 
+    /**
+     * Adds a new adjacent node to the current node.
+     *
+     * @param node
+     *      adjacent node to be added
+     */
     public void addEdge(Node<T> node) {
         this.edges.add(node);
         this.edgeNames.add(node.getName());
     }
 
+    /**
+     * Replaces all edges of the current node by creating new ones with
+     * new specified names.
+     *
+     * @param edgeNames
+     *      specified names for creating new adjacent nodes
+     */
     public void replaceEdgesWith(List<T> edgeNames) {
         this.edges = edgeNames.stream()
                 .map((Function<T, Node<T>>) Node::new)
                 .collect(Collectors.toList());
     }
 
-    public boolean dependsOn(T descendantName) {
+    /**
+     * Determines if a node is adjacent to another node.
+     *
+     * @param adjacentNodeName
+     *      node name to check if it is adjacent to the current node
+     * @return true/false if the specified node is adjacent to the current node
+     */
+    public boolean isAdjacentTo(T adjacentNodeName) {
         return edgeNames.stream()
-                .anyMatch((eName) -> eName.equals(descendantName));
+                .anyMatch((eName) -> eName.equals(adjacentNodeName));
     }
 
     public boolean isVisited() {
@@ -73,7 +111,7 @@ public class Node<T> {
         }
 
         while (true) {
-            Node node = it.next();
+            Node<T> node = it.next();
             builder.append(node.name);
             if (!it.hasNext()) {
                 builder.append("\n");

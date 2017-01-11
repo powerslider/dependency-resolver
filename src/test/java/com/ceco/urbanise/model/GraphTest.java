@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
+ * Test class testing functionality from {@link Graph}
+ *
  * @author Tsvetan Dimitrov <tsvetan.dimitrov23@gmail.com>
  * @since 09-Jan-2017
  */

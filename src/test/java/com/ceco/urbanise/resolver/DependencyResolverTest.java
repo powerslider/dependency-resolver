@@ -5,8 +5,9 @@ import com.ceco.urbanise.model.Graph;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Tsvetan Dimitrov <tsvetan.dimitrov@ontotext.com>
@@ -15,12 +16,26 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DependencyResolverTest {
 
     @Test
-    @DisplayName("should throw exception when no dependency graph is passed to resolver")
+    @DisplayName("should throw exception when dependency graph list is empty")
+    void testThrowsExceptionWhenDependencyGraphListIsEmpty() {
+        Throwable exception = assertThrows(IllegalStateException.class,
+                () -> DependencyResolver.<String>builder()
+                        .createResolver()
+        );
+
+        assertEquals("No dependency graphs set. Use withDependencyGraph(...) to add new graphs to be resolved.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("should throw exception when dependency graph is null")
     void testThrowsExceptionWhenNoGraphSet() {
         Throwable exception = assertThrows(IllegalArgumentException.class,
-                () -> new DependencyResolver.Builder<>().createResolver());
+                () -> DependencyResolver.<String>builder()
+                        .withDependencyGraph(null)
+                        .createResolver()
+        );
 
-        assertEquals("Dependency graph cannot be null", exception.getMessage());
+        assertEquals("Dependency graph cannot be null.", exception.getMessage());
     }
 
     @Test
@@ -29,12 +44,13 @@ public class DependencyResolverTest {
         Graph<String> dependencyGraph = TestData.graphExample1();
         Graph<String> expectedGraph = TestData.resolvedGraphExample1();
 
-        Graph resolvedGraph = new DependencyResolver.Builder<String>()
+        @SuppressWarnings("unchecked")
+        List<Graph<String>> resolvedGraphs = DependencyResolver.<String>builder()
                 .withDependencyGraph(dependencyGraph)
                 .createResolver()
                 .resolve();
 
-        assertEquals(expectedGraph, resolvedGraph);
+        assertEquals(expectedGraph, resolvedGraphs.get(0));
     }
 
     @Test
@@ -43,12 +59,35 @@ public class DependencyResolverTest {
         Graph<String> dependencyGraph = TestData.graphExample1().reverse();
         Graph<String> expectedGraph = TestData.resolvedReversedGraphExample1();
 
-        Graph resolvedGraph = new DependencyResolver.Builder<String>()
+        @SuppressWarnings("unchecked")
+        List<Graph<String>> resolvedGraphs = DependencyResolver.<String>builder()
                 .withDependencyGraph(dependencyGraph)
                 .createResolver()
                 .resolve();
 
-        assertEquals(expectedGraph, resolvedGraph);
+        assertEquals(expectedGraph, resolvedGraphs.get(0));
+    }
+
+    @Test
+    @DisplayName("should find correct dependencies of each node in a graph and a reversed version of it")
+    void testCorrectDepsInGraphAndReversedGraph() {
+        Graph<String> dependencyGraph = TestData.graphExample1();
+        Graph<String> reversedDependencyGraph = new Graph<>(dependencyGraph).reverse();
+
+        Graph<String> expectedGraph = TestData.resolvedGraphExample1();
+        Graph<String> expectedReversedGraph = TestData.resolvedReversedGraphExample1();
+
+        @SuppressWarnings("unchecked")
+        List<Graph<String>> resolvedGraphs = DependencyResolver.<String>builder()
+                .withDependencyGraph(dependencyGraph)
+                .withDependencyGraph(reversedDependencyGraph)
+                .createResolver()
+                .resolve();
+
+        assertAll("resolved graphs",
+                () -> assertEquals(expectedGraph, resolvedGraphs.get(0)),
+                () -> assertEquals(expectedReversedGraph, resolvedGraphs.get(1))
+        );
     }
 
     @Test
@@ -58,7 +97,7 @@ public class DependencyResolverTest {
 
         Throwable exception = assertThrows(IllegalStateException.class,
                 () -> {
-                    new DependencyResolver.Builder<String>()
+                    DependencyResolver.<String>builder()
                             .withDependencyGraph(dependencyGraph)
                             .createResolver()
                             .resolve();
