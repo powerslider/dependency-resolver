@@ -1,7 +1,7 @@
-package com.ceco.urbanise;
+package com.ceco;
 
-import com.ceco.urbanise.model.Graph;
-import com.ceco.urbanise.model.Node;
+import com.ceco.model.Graph;
+import com.ceco.model.Node;
 
 /**
  * Class for providing test objects used for expected assertions.

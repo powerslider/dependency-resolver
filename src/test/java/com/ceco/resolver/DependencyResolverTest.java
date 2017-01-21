@@ -1,7 +1,7 @@
-package com.ceco.urbanise.resolver;
+package com.ceco.resolver;
 
-import com.ceco.urbanise.TestData;
-import com.ceco.urbanise.model.Graph;
+import com.ceco.TestData;
+import com.ceco.model.Graph;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

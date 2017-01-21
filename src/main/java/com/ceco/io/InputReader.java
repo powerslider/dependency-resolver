@@ -1,7 +1,7 @@
-package com.ceco.urbanise.io;
+package com.ceco.io;
 
-import com.ceco.urbanise.model.Graph;
-import com.ceco.urbanise.model.Node;
+import com.ceco.model.Node;
+import com.ceco.model.Graph;
 
 import java.io.InputStream;
 import java.util.Scanner;

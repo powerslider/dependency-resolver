@@ -1,4 +1,4 @@
-package com.ceco.urbanise.model;
+package com.ceco.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;

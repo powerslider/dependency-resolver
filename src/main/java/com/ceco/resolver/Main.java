@@ -1,7 +1,7 @@
-package com.ceco.urbanise.resolver;
+package com.ceco.resolver;
 
-import com.ceco.urbanise.io.InputReader;
-import com.ceco.urbanise.model.Graph;
+import com.ceco.io.InputReader;
+import com.ceco.model.Graph;
 
 import java.util.List;
 

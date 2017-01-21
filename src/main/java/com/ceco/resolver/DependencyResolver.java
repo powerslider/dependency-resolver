@@ -1,7 +1,7 @@
-package com.ceco.urbanise.resolver;
+package com.ceco.resolver;
 
-import com.ceco.urbanise.model.Graph;
-import com.ceco.urbanise.model.Node;
+import com.ceco.model.Graph;
+import com.ceco.model.Node;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -1,6 +1,6 @@
-package com.ceco.urbanise.model;
+package com.ceco.model;
 
-import com.ceco.urbanise.TestData;
+import com.ceco.TestData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
